@@ -30,6 +30,21 @@ task("donaters", "View donaters list")
     });
   });
 
+task("donationAmount", "View donater amount")
+  .addParam("contract", "Address of contract")
+  .addParam("donater", "Address of donater")
+  .setAction(async (taskArgs, hre) => {
+    const [sender] = await hre.ethers.getSigners();
+
+    const fund = await hre.ethers.getContractAt("Funding", taskArgs.contract);
+
+    const amount = await fund
+      .connect(sender)
+      .getDonationAmount(taskArgs.donater);
+
+    console.log("Donater " + taskArgs.donater + " was sent " + amount + " Wei");
+  });
+
 task("manage", "Extract donations from fund into specified address")
   .addParam("contract", "Address of contract")
   .addParam("amount", "Amount of your donation in Wai")

@@ -50,6 +50,21 @@ describe("Funding", function () {
     expect(await fund.getDonators()).has.length(1);
   });
 
+  it("Should show donation amount for address", async function () {
+    const [owner, donater] = await ethers.getSigners();
+
+    const Funding = await ethers.getContractFactory("Funding");
+    const fund = await Funding.deploy(owner.address);
+
+    await fund.deployed();
+
+    const tx = await fund.connect(donater).donate({ value: 10 });
+
+    await tx.wait();
+
+    expect(await fund.getDonationAmount(donater.address)).to.be.equal(10);
+  });
+
   it("Owner can extract money for managment", async function () {
     const [owner, donater, recepient] = await ethers.getSigners();
 

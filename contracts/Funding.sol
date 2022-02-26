@@ -38,4 +38,8 @@ contract Funding {
     function getDonators() public view returns(address[] memory donators) {
         donators = donaterAddresses;
     }
+
+    function getDonationAmount(address donator) public view returns(uint amount) {
+        amount = donaters[donator];
+    }
 }
